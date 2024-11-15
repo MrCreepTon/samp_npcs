@@ -308,15 +308,16 @@ bool Npc::updateFromSync(const NpcSyncPacket &syncPacket, IPlayer *sender) {
         return false;
       }
     } else {
-      const auto playerDist3D = sender->getPosition() - pos;
-      const auto distFromPlayer = glm::dot(playerDist3D, playerDist3D);
+      // player in spectator shouldn't have the same rights to send sync, instead, prioritize non-spectating ones
+      const auto distFromPlayer = glm::distance(sender->getPosition(), pos) + ((sender->getState() == PlayerState_Spectating) ? 5.f : 0.f);
       const auto &entries = streamedFor_.entries();
       for (const auto comparable : entries) {
         if (comparable == sender || NpcComponent::instance().isPlayerAfk(*comparable) || !verifiedSupportedPlayers_.valid(comparable->getID())) {
           continue;
         }
-        const auto otherDist3D = comparable->getPosition() - pos;
-        if (glm::dot(otherDist3D, otherDist3D) < distFromPlayer) {
+        // player in spectator shouldn't have the same rights to send sync, instead, prioritize non-spectating one
+        const auto otherDist = glm::distance(comparable->getPosition(), pos) + ((comparable->getState() == PlayerState_Spectating) ? 5.f : 0.f);
+        if (otherDist < distFromPlayer) {
           return false;
         }
       }
