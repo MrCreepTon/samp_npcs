@@ -48,8 +48,8 @@ native bool:SetNpcVirtualWorld(NPC:npc, worldid);
 native bool:GetNpcPosition(NPC:npc, &Float:x, &Float:y, &Float:z);
 native bool:SetNpcPosition(NPC:npc, Float:x, Float:y, Float:z);
 
-native bool:GetNpcFacingAngle(NPC:npc, &Float:health);
-native bool:SetNpcFacingAngle(NPC:npc, Float:health);
+native bool:GetNpcFacingAngle(NPC:npc, &Float:angle);
+native bool:SetNpcFacingAngle(NPC:npc, Float:angle);
 
 native bool:IsNpcInvulnerable(NPC:npc);
 native bool:SetNpcInvulnerable(NPC:npc, bool:invulnerable = true);
