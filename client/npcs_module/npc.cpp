@@ -385,6 +385,7 @@ void npcs_module::npc::update_from_sync(const npc_sync_receive_data_t &data) {
 bool npcs_module::npc::send_sync_if_required() {
   if (!is_ped_valid()) return false;
 
+#if 0
   auto am_i_the_closest_to_npc = [this]() {
     const auto npc_pos = ped->GetPosition();
     const auto my_player_id = utils::samp_get_my_id();
@@ -398,13 +399,18 @@ bool npcs_module::npc::send_sync_if_required() {
     }
     return true;
   };
+#endif
 
   const auto now = std::chrono::steady_clock::now();
 
   auto sent_sync = false;
 
   if (now - last_sync_send_check > get_sync_send_rate()) {
+#if 0
     const auto should_send_this_frame = !sent_sync_once || am_i_the_closest_to_npc();
+#else
+    const auto should_send_this_frame = true;
+#endif
     if (should_send_this_frame) {
       send_sync();
       sent_sync = true;
