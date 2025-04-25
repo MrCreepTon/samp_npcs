@@ -327,6 +327,10 @@ bool NpcComponent::NpcControlRPCHandler::onReceive(IPlayer &peer, NetworkBitStre
     if (rpc.GiveTakeDamage.DamagerNpcId != INVALID_NPC_ID) {
       auto damagerNpc = NpcComponent::instance().get(rpc.GiveTakeDamage.DamagerNpcId);
       if (damagerNpc == nullptr || !damagerNpc->isStreamedInForPlayer(peer)) return false;
+      // If we're going to add support of placing npcs into vehicles,
+      // Then we should look for more damage reasons
+      // See there: https://github.com/openmultiplayer/open.mp/issues/600#issuecomment-1377236916
+      if (rpc.GiveTakeDamage.WeaponID != damagerNpc->getWeapon()) return false;
       if (!npc.isPlayerReliableForSync(peer)) return false;
       if (!NpcComponent::instance().npcDamageDispatcher.stopAtFalse([&](auto *handler) {
         return handler->onNpcGiveDamageNpc(*npc_, *damagerNpc, rpc.GiveTakeDamage.Damage, rpc.GiveTakeDamage.WeaponID, BodyPart(rpc.GiveTakeDamage.Bodypart));
