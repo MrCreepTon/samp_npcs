@@ -22,7 +22,7 @@ jobs:
 
       - name: Configure and Build
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fpermissive"
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fpermissive -I$PWD/server/third-party/omp-sdk/include"
           cmake --build build --config Release --parallel
 
       - name: Upload Server Artifact
@@ -47,12 +47,13 @@ jobs:
           path: plugin-sdk
 
       - name: Build Plugin-SDK
+        shell: cmd
         run: |
-          cmake -S plugin-sdk -B plugin-sdk/build -A Win32 -DCMAKE_BUILD_TYPE=Release
-          cmake --build plugin-sdk/build --config Release --parallel
-          mkdir plugin-sdk/output/lib
-          cp plugin-sdk/build/Release/*.lib plugin-sdk/output/lib/
-
+          choco install premake.portable
+          cd plugin-sdk
+          premake5 vs2022
+          msbuild "Plugin SDK.sln" /p:Configuration=Release /p:Platform=Win32
+          
       - name: Configure and Build
         env:
           PLUGIN_SDK_DIR: ${{ github.workspace }}/plugin-sdk
