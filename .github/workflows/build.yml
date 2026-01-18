@@ -54,7 +54,7 @@ jobs:
         run: |
           cd plugin-sdk
           tools\premake\premake5.exe --file=tools\premake\premake5.lua --pluginsdkdir=. vs2022
-          msbuild "Plugin SDK.sln" /p:Configuration=Release /p:Platform=Win32
+          msbuild "plugin.sln" /p:Configuration=Release /p:Platform=Win32
           
       - name: Configure and Build
         env:
