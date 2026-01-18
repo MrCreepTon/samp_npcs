@@ -20,18 +20,6 @@ jobs:
       - name: Install Conan
         run: pip3 install "conan<2.0"
 
-      - name: Fix SDK Case Sensitivity
-        run: |
-          if [ -d "server/third-party/omp-sdk/include/Server/Components/Pawn/Impl" ]; then
-            mv server/third-party/omp-sdk/include/Server/Components/Pawn/Impl server/third-party/omp-sdk/include/Server/Components/Pawn/impl
-          fi
-
-      - name: Fix SDK Case Sensitivity
-        run: |
-          if [ -d "server/third-party/omp-sdk/include/Server/Components/Pawn/Impl" ]; then
-            mv server/third-party/omp-sdk/include/Server/Components/Pawn/Impl server/third-party/omp-sdk/include/Server/Components/Pawn/impl
-          fi
-
       - name: Configure and Build
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fpermissive -I$PWD/server/third-party/omp-sdk/include"
@@ -70,8 +58,9 @@ jobs:
       - name: Build Plugin-SDK
         shell: cmd
         run: |
+          copy premake5.exe plugin-sdk\premake5.exe
           cd plugin-sdk
-          ../premake5 vs2022
+          premake5 vs2022
           msbuild "Plugin SDK.sln" /p:Configuration=Release /p:Platform=Win32
           
       - name: Configure and Build
