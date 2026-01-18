@@ -57,8 +57,8 @@ jobs:
 
       - name: Install Premake
         run: |
-           choco install premake.portable
-           cp "C:\ProgramData\chocolatey\bin\premake5.exe" .
+          choco install premake.portable
+          Get-Command premake5
 
       - name: Build Plugin-SDK
         shell: cmd
