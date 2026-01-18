@@ -49,6 +49,9 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
 
+      - name: Install Conan
+        run: pip install "conan<2.0"
+
       - name: Build Plugin-SDK
         shell: cmd
         run: |
