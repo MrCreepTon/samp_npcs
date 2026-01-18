@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Install dependencies
         run: |
@@ -21,7 +21,7 @@ jobs:
           cmake --build build --config Release --parallel
 
       - name: Upload Server Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: linux
           path: build/server/*.so
@@ -31,10 +31,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Checkout Plugin-SDK
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           repository: DK22Pac/plugin-sdk
           path: plugin-sdk
@@ -47,7 +47,7 @@ jobs:
           cmake --build build --config Release --parallel
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: windows
           path: |
