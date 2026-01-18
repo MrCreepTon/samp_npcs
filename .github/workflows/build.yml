@@ -22,7 +22,7 @@ jobs:
 
       - name: Configure and Build
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fpermissive"
           cmake --build build --config Release --parallel
 
       - name: Upload Server Artifact
@@ -46,11 +46,18 @@ jobs:
           repository: DK22Pac/plugin-sdk
           path: plugin-sdk
 
+      - name: Build Plugin-SDK
+        run: |
+          cmake -S plugin-sdk -B plugin-sdk/build -A Win32 -DCMAKE_BUILD_TYPE=Release
+          cmake --build plugin-sdk/build --config Release --parallel
+          mkdir plugin-sdk/output/lib
+          cp plugin-sdk/build/Release/*.lib plugin-sdk/output/lib/
+
       - name: Configure and Build
         env:
           PLUGIN_SDK_DIR: ${{ github.workspace }}/plugin-sdk
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_CLIENT=ON
+          cmake -B build -A Win32 -DCMAKE_BUILD_TYPE=Release -DBUILD_CLIENT=ON
           cmake --build build --config Release --parallel
 
       - name: Upload Artifacts
