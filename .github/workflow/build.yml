@@ -1,0 +1,57 @@
+name: Build project
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-linux:
+    name: Build Server (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y gcc-multilib g++-multilib
+
+      - name: Configure and Build
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --config Release --parallel
+
+      - name: Upload Server Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux
+          path: build/server/*.so
+
+  build-windows:
+    name: Build Client & Server (Windows)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Checkout Plugin-SDK
+        uses: actions/checkout@v3
+        with:
+          repository: DK22Pac/plugin-sdk
+          path: plugin-sdk
+
+      - name: Configure and Build
+        env:
+          PluginSDK_ROOT: ${{ github.workspace }}/plugin-sdk
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_CLIENT=ON
+          cmake --build build --config Release --parallel
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows
+          path: |
+            build/server/**/*.dll
+            build/client/**/*.dll
+          
+        
