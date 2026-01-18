@@ -49,18 +49,12 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
 
-      - name: Install Premake
-        run: |
-          Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta2/premake-5.0.0-beta2-windows.zip" -OutFile "premake5.zip"
-          Expand-Archive "premake5.zip" -DestinationPath "."
-          Remove-Item "premake5.zip"
-
       - name: Build Plugin-SDK
         shell: cmd
         run: |
-          copy premake5.exe plugin-sdk\premake5.exe
-          cd plugin-sdk
-          premake5 vs2022
+          cd plugin-sdk\tools\premake
+          premake5.exe vs2022
+          cd ..\..
           msbuild "Plugin SDK.sln" /p:Configuration=Release /p:Platform=Win32
           
       - name: Configure and Build
