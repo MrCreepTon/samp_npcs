@@ -82,6 +82,5 @@ jobs:
           name: windows
           path: |
             build/server/**/*.dll
-            build/client/**/*.dll
-          
+            build/client/**/*.asi          
         
