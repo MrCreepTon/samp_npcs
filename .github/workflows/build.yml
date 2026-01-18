@@ -15,7 +15,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install -y gcc-multilib g++-multilib
+          sudo apt-get install -y gcc-multilib g++-multilib python3-pip
+
+      - name: Install Conan
+        run: pip3 install conan
 
       - name: Configure and Build
         run: |
@@ -45,7 +48,7 @@ jobs:
 
       - name: Configure and Build
         env:
-          PluginSDK_ROOT: ${{ github.workspace }}/plugin-sdk
+          PluginSDK_ROOT_DIR: ${{ github.workspace }}/plugin-sdk
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_CLIENT=ON
           cmake --build build --config Release --parallel
