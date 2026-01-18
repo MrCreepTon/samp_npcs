@@ -1,4 +1,3 @@
-// #include <Server/Components/Pawn/impl/pawn_natives.hpp>
 #include <Server/Components/Pawn/pawn.hpp>
 #include <Server/Components/Pawn/Impl/pawn_natives.hpp>
 

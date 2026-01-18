@@ -26,6 +26,12 @@ jobs:
             mv server/third-party/omp-sdk/include/Server/Components/Pawn/Impl server/third-party/omp-sdk/include/Server/Components/Pawn/impl
           fi
 
+      - name: Fix SDK Case Sensitivity
+        run: |
+          if [ -d "server/third-party/omp-sdk/include/Server/Components/Pawn/Impl" ]; then
+            mv server/third-party/omp-sdk/include/Server/Components/Pawn/Impl server/third-party/omp-sdk/include/Server/Components/Pawn/impl
+          fi
+
       - name: Configure and Build
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fpermissive -I$PWD/server/third-party/omp-sdk/include"
@@ -57,8 +63,9 @@ jobs:
 
       - name: Install Premake
         run: |
-          choco install premake.portable
-          Get-Command premake5
+          Invoke-WebRequest -Uri "https://github.com/premake/premake-core/releases/download/v5.0.0-beta2/premake-5.0.0-beta2-windows.zip" -OutFile "premake5.zip"
+          Expand-Archive "premake5.zip" -DestinationPath "."
+          Remove-Item "premake5.zip"
 
       - name: Build Plugin-SDK
         shell: cmd
