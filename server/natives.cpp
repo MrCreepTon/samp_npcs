@@ -1,4 +1,5 @@
-#include <Server/Components/Pawn/impl/pawn_natives.hpp>
+// #include <Server/Components/Pawn/impl/pawn_natives.hpp>
+#include <Server/Components/Pawn/pawn.hpp>
 
 #include "NpcComponent.h"
 #include "Server/Components/Vehicles/vehicle_seats.hpp"
@@ -217,8 +218,8 @@ SCRIPT_API(TaskNpcPlayAnimation, bool(INpc &npc, const std::string& animlib, con
 
 ///////////////
 
-SCRIPT_API(SetNpcReliablePlayer, bool(INpc &npc, const IPlayer* player)) {
-  npc.SetReliablePlayerForSync(player);
+SCRIPT_API(SetNpcReliablePlayer, bool(INpc &npc, IPlayer* player)) {
+  npc.setReliablePlayerForSync(player);
   return true;
 }
 

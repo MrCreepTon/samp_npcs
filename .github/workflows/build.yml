@@ -56,13 +56,15 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
 
       - name: Install Premake
-        run: choco install premake.portable
+        run: |
+           choco install premake.portable
+           cp "C:\ProgramData\chocolatey\bin\premake5.exe" .
 
       - name: Build Plugin-SDK
         shell: cmd
         run: |
           cd plugin-sdk
-          premake5 vs2022
+          ../premake5 vs2022
           msbuild "Plugin SDK.sln" /p:Configuration=Release /p:Platform=Win32
           
       - name: Configure and Build
