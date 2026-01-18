@@ -1,5 +1,7 @@
 #include "npc.h"
 #include "utils.h"
+#include <eWeaponType.h>
+#include <CPed.h>
 
 #include "npcs_module.h"
 
@@ -749,7 +751,7 @@ CWeapon *npcs_module::npc::get_current_weapon() {
   if (!is_ped_valid())
     return nullptr;
 
-  auto &weapon = ped->m_aWeapons[ped->m_nActiveWeaponSlot];
+  auto &weapon = ped->m_aWeapons[static_cast<CPed*>(ped.get())->m_nActiveWeaponSlot];
   if (weapon.m_eWeaponType == WEAPON_UNARMED)
     return nullptr;
 

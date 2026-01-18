@@ -200,7 +200,7 @@ public:
   IVehicle* currentVehicle;
   int8_t currentVehicleSeat;
 
-  const IPlayer* manuallyInstalledReliablePlayer = nullptr;
+  IPlayer* manuallyInstalledReliablePlayer = nullptr;
 
   UniqueIDArray<IPlayer, PLAYER_POOL_SIZE> streamedFor_;
   UniqueIDArray<IPlayer, PLAYER_POOL_SIZE> verifiedSupportedPlayers_; // players who have sent npc sync once at least
