@@ -26,7 +26,7 @@ CVehicle *npcs_module::utils::get_ped_vehicle(CPed *ped) {
   if (ped == nullptr) {
     ped = FindPlayerPed(-1);
   }
-  if (ped->m_nPedFlags.bInVehicle && ped->m_pVehicle != nullptr) {
+  if (ped->bInVehicle && ped->m_pVehicle != nullptr) {
     return ped->m_pVehicle;
   }
   return nullptr;

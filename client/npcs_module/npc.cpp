@@ -20,15 +20,15 @@ npcs_module::npc::npc(uint16_t id, uint16_t model_id, const CVector &position) {
     ped->SetOrientation(0.f, 0.f, 0.f);
     ped->m_nMoneyCount = 0;
     { // Setup ped flags
-      ped->m_nPedFlags.bDoesntDropWeaponsWhenDead = true;
-      ped->m_nPedFlags.bAllowMedicsToReviveMe = false;
-      ped->m_nPedFlags.bNoCriticalHits = true;
-      ped->m_nPedFlags.bDrownsInWater = false;
-      ped->m_nPedFlags.bDontDragMeOutCar = true;
+      ped->bDoesntDropWeaponsWhenDead = true;
+      ped->bAllowMedicsToReviveMe = false;
+      ped->bNoCriticalHits = true;
+      ped->bDrownsInWater = false;
+      ped->bDontDragMeOutCar = true;
     }
     ped->m_fHealth = 100.f;
     ped->m_fMaxHealth = 100.f;
-    ped->m_pIntelligence->SetPedDecisionMakerType(-2);
+    ped->m_pIntelligence->SetPedDecisionMakerType(static_cast<eDecisionMakerType>(-2));
 
     // gonna send after X time since npc creation
     last_sync_send = std::chrono::steady_clock::now() + std::chrono::milliseconds(250);
@@ -129,7 +129,7 @@ void npcs_module::npc::set_health(float health) {
 
   if (health <= 0.f && get_active_task_type() != TASK_COMPLEX_DIE) {
     clear_active_task(true);
-    auto task = new CTaskComplexDie(WEAPON_UNARMED,
+    auto task = new CTaskComplexDie(WEAPONTYPE_UNARMED,
                                     ANIM_GROUP_DEFAULT,
                                     0xF,
                                     4.0,
@@ -318,7 +318,7 @@ void npcs_module::npc::update() {
 
   if (is_dead() && get_active_task_type() != TASK_COMPLEX_DIE) {
     clear_active_task(true);
-    auto task = new CTaskComplexDie(WEAPON_UNARMED,
+    auto task = new CTaskComplexDie(WEAPONTYPE_UNARMED,
                                     ANIM_GROUP_DEFAULT,
                                     0xF,
                                     4.0,
@@ -751,8 +751,8 @@ CWeapon *npcs_module::npc::get_current_weapon() {
   if (!is_ped_valid())
     return nullptr;
 
-  auto &weapon = ped->m_aWeapons[static_cast<CPed*>(ped.get())->m_nActiveWeaponSlot];
-  if (weapon.m_eWeaponType == WEAPON_UNARMED)
+  auto &weapon = ped->m_aWeapons[static_cast<CPed*>(ped.get())->m_nSelectedWepSlot];
+  if (weapon.m_eWeaponType == WEAPONTYPE_UNARMED)
     return nullptr;
 
   return &weapon;
