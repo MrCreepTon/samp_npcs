@@ -2,7 +2,7 @@ set(TARGET_NAME ${PROJECT_NAME}_client)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # MSVC-only flags
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 elseif (MSVC)
     # Both MSVC and MSVC-like command-line interface compilers (Clang-cl)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
