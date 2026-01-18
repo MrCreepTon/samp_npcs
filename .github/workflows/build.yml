@@ -49,6 +49,15 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Patch Conan CMake for MSVC 194x
+        run: |
+           python -c "path='server/third-party/omp-sdk/lib/cmake-conan/conan.cmake'; content=open(path, 'r').read(); open(path, 'w').write(content.replace('VERSION_LESS 1940', 'VERSION_LESS 1950'))"
+
       - name: Install Conan
         run: pip install "conan<2.0"
 
